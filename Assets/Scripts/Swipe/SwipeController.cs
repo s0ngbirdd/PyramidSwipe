@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -10,14 +9,20 @@ using Random = UnityEngine.Random;
 public class SwipeController : MonoBehaviour
 {
     //public static event Action OnResetRandomPyramid;
+    public static event Action<float> OnBuildPyramid;
+    public static event Action<int> OnBuildBlock;
+    public static event Action OnWrongSwipe;
     
     [SerializeField] private GameObject _blockPrefab;
     [SerializeField] private Transform[] _pyramidTransforms;
     [SerializeField] private float _tweenDuration = 0.25f;
     [SerializeField] private Image _arrowImage;
     [SerializeField] private CanvasGroup _arrowCanvasGroup;
-    //[SerializeField] private TextMeshProUGUI _debugTMP;
-    
+
+    [SerializeField] private int _addScoreForBlock = 5;
+    [SerializeField] private float _addTimeForPyramid = 3f;
+    [SerializeField] private float _timeDecreasePerPyramid = 0.05f;
+
     private Vector2 _startTouchPosition;
     private Vector2 _endTouchPosition;
 
@@ -87,7 +92,9 @@ public class SwipeController : MonoBehaviour
                     else
                     {
                         Debug.Log("LOSE");
-                        RestartGame();
+                        //RestartGame();
+                        
+                        OnWrongSwipe?.Invoke();
                     }
                 }
             }
@@ -103,7 +110,9 @@ public class SwipeController : MonoBehaviour
                     else
                     {
                         Debug.Log("LOSE");
-                        RestartGame();
+                        //RestartGame();
+                        
+                        OnWrongSwipe?.Invoke();
                     }
                 }
             }
@@ -129,11 +138,25 @@ public class SwipeController : MonoBehaviour
             _arrowImage.rectTransform.anchoredPosition = new Vector2(Screen.width * 0.42f * _swipeDirection, _arrowImage.rectTransform.anchoredPosition.y);
             _arrowImage.rectTransform.localScale = new Vector3(_swipeDirection, 1, 1);
             _currentBlock = null;
+            
+            OnBuildBlock?.Invoke(_addScoreForBlock);
 
             if (_pyramidChildTransforms.Count <= 0)
             {
                 Debug.Log("WIN");
                 ResetRandomPyramid();
+                
+                
+                OnBuildPyramid?.Invoke(_addTimeForPyramid);
+                _addTimeForPyramid -= _addTimeForPyramid * _timeDecreasePerPyramid;
+
+                if (_addTimeForPyramid < 1)
+                {
+                    _addTimeForPyramid = 1;
+                }
+                
+                OnBuildBlock?.Invoke(_addScoreForBlock * 4);
+                
                 //RestartGame();
             }
         });
@@ -168,10 +191,9 @@ public class SwipeController : MonoBehaviour
         //OnResetRandomPyramid?.Invoke();
     }
 
-    private void RestartGame()
+    /*private void RestartGame()
     {
+        
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    
+    }*/
 }
