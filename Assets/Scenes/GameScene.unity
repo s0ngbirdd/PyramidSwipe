@@ -251,7 +251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -754,7 +754,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2542863080096652404, guid: 0d7cc2244017f4d50bbc49a9bd653a2f, type: 3}
       propertyPath: _rate
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2542863080096652404, guid: 0d7cc2244017f4d50bbc49a9bd653a2f, type: 3}
       propertyPath: _duration
@@ -1552,7 +1552,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3313,7 +3313,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4608,7 +4608,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4771,7 +4771,7 @@ MonoBehaviour:
   _arrowLeftCanvasGroup: {fileID: 591396600}
   _arrowRightCanvasGroup: {fileID: 1648408507}
   _addScoreForBlock: 5
-  _addTimeForPyramid: 3
+  _addTimeForPyramid: 5
   _timeDecreasePerPyramid: 0.05
   _poofParticle: {fileID: 1459974104}
   _gemsParticle: {fileID: 248577166}

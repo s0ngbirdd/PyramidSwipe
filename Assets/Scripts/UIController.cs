@@ -227,7 +227,8 @@ public class UIController : MonoBehaviour
         if (_startCurrency >= _addTimeCost && _isCoroutineEnd)
         {
             StartCoroutine(DecreaseCurrencyCoroutine(_addTimeCost));
-            StartCoroutine(UpdateTimeCoroutine(_addTime));
+            UpdateTime(_addTime);
+            //StartCoroutine(UpdateTimeCoroutine(_addTime));
 
             _isCoroutineEnd = false;
         }
