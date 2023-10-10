@@ -5,7 +5,7 @@ public class MainMenuScoreController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _scoreText;
 
-    private int _score = 0;
+    private int _score;
 
     private void Start()
     {
