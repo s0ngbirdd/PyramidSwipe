@@ -180,6 +180,8 @@ public class SwipeController : MonoBehaviour
     {
         _moveTween = _currentBlock.transform.DOMoveX(_pyramidChildTransforms[0].position.x, _tweenDuration).SetEase(Ease.Linear).OnComplete(() =>
         {
+            AudioManager.Instance.PlayOneShot("PlaceBlock");
+            
             _currentBlock.transform.SetParent(_randomPyramidTransform);
             _swipeDirection *= -1;
             _pyramidChildTransforms.RemoveAt(0);
@@ -209,6 +211,8 @@ public class SwipeController : MonoBehaviour
                 }
                 
                 OnBuildBlock?.Invoke(_addScoreForBlock * 4);
+                
+                AudioManager.Instance.PlayOneShot("AddGems");
                 OnAddCurrency?.Invoke(10);
                 
                 //RestartGame();

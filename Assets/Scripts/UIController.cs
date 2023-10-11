@@ -40,6 +40,11 @@ public class UIController : MonoBehaviour
     [SerializeField] private float _requiredHoldTime = 2;
     [SerializeField] private Image _fillImage;
 
+    [SerializeField] private Button _soundButton;
+    [SerializeField] private Image _soundImage;
+    [SerializeField] private Sprite _soundEnabledSprite;
+    [SerializeField] private Sprite _soundDisabledSprite;
+
     private int _startScore;
     private int _startCurrency;
     private Tween _tween;
@@ -58,13 +63,14 @@ public class UIController : MonoBehaviour
         _gameOverRestartButton.onClick.AddListener(RestartGame);
         _addTimeButton.onClick.AddListener(AddTime);
         _ignoreSwipeButton.onClick.AddListener(IgnoreSwipe);
+        _soundButton.onClick.AddListener(EnableDisableSound);
         
         SwipeController.OnBuildBlock += UpdateScore;
         SwipeController.OnBuildPyramid += UpdateTime;
         SwipeController.OnAddCurrency += UpdateCurrency;
         SwipeController.OnWrongSwipe += EnableGameOverPopup;
 
-        SceneLoader.OnLoadScene += CheckScoreForSave;
+        ASyncLoader.OnLoadScene += CheckScoreForSave;
     }
 
     private void OnDisable()
@@ -75,13 +81,14 @@ public class UIController : MonoBehaviour
         _gameOverRestartButton.onClick.RemoveListener(RestartGame);
         _addTimeButton.onClick.RemoveListener(AddTime);
         _ignoreSwipeButton.onClick.RemoveListener(IgnoreSwipe);
+        _soundButton.onClick.RemoveListener(EnableDisableSound);
         
         SwipeController.OnBuildBlock -= UpdateScore;
         SwipeController.OnBuildPyramid -= UpdateTime;
         SwipeController.OnAddCurrency -= UpdateCurrency;
         SwipeController.OnWrongSwipe -= EnableGameOverPopup;
         
-        SceneLoader.OnLoadScene -= CheckScoreForSave;
+        ASyncLoader.OnLoadScene -= CheckScoreForSave;
 
         _tween.Kill();
     }
@@ -90,6 +97,15 @@ public class UIController : MonoBehaviour
     {
         _startCurrency = SaveLoadSystem.Instance.LoadGame1();
         _currencyTMP.text = _startCurrency.ToString();
+        
+        if (AudioManager.Instance.ReturnSoundEnabled())
+        {
+            _soundImage.sprite = _soundEnabledSprite;
+        }
+        else if (!AudioManager.Instance.ReturnSoundEnabled())
+        {
+            _soundImage.sprite = _soundDisabledSprite;
+        }
     }
 
     private void Update()
@@ -188,6 +204,8 @@ public class UIController : MonoBehaviour
 
     private void EnablePausePopup()
     {
+        AudioManager.Instance.PlayOneShot("Click");
+        
         OnEnablePopup?.Invoke();
         _pausePopup.SetActive(true);
         Time.timeScale = 0;
@@ -196,6 +214,8 @@ public class UIController : MonoBehaviour
 
     private void DisablePausePopup()
     {
+        AudioManager.Instance.PlayOneShot("Click");
+        
         _tween = _pauseCanvasGroup.DOFade(0, _fadeTime).SetEase(Ease.Linear).SetUpdate(true).OnComplete(() =>
         {
             _pausePopup.SetActive(false);
@@ -206,6 +226,8 @@ public class UIController : MonoBehaviour
 
     private void EnableGameOverPopup()
     {
+        AudioManager.Instance.PlayOneShot("GameOver");
+        
         OnEnablePopup?.Invoke();
         _isGameOver = true;
         _gameOverPopup.SetActive(true);
@@ -215,6 +237,8 @@ public class UIController : MonoBehaviour
 
     private void RestartGame()
     {
+        AudioManager.Instance.PlayOneShot("Click");
+        
         Time.timeScale = 1;
         
         CheckScoreForSave();
@@ -224,6 +248,8 @@ public class UIController : MonoBehaviour
     
     private void AddTime()
     {
+        AudioManager.Instance.PlayOneShot("Click");
+        
         if (_startCurrency >= _addTimeCost && _isCoroutineEnd)
         {
             StartCoroutine(DecreaseCurrencyCoroutine(_addTimeCost));
@@ -236,6 +262,8 @@ public class UIController : MonoBehaviour
     
     private void IgnoreSwipe()
     {
+        AudioManager.Instance.PlayOneShot("Click");
+        
         if (_startCurrency >= _ignoreSwipeCost && _isCoroutineEnd && !_pointerDown)
         {
             OnIgnoreSwipe?.Invoke(/*_ignoreSwipeTime*/);
@@ -252,6 +280,21 @@ public class UIController : MonoBehaviour
         _pointerDown = false;
         _pointerDownTimer = 0;
         _fillImage.fillAmount = 0;
+    }
+    
+    private void EnableDisableSound()
+    {
+        AudioManager.Instance.PlayOneShot(("Click"));
+        AudioManager.Instance.EnableDisableSoundVolume();
+
+        if (AudioManager.Instance.ReturnSoundEnabled())
+        {
+            _soundImage.sprite = _soundEnabledSprite;
+        }
+        else if (!AudioManager.Instance.ReturnSoundEnabled())
+        {
+            _soundImage.sprite = _soundDisabledSprite;
+        }
     }
 
     private void CheckScoreForSave()
