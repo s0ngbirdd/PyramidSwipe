@@ -7,20 +7,20 @@ using UnityEngine.UI;
 
 public class ASyncLoader : MonoBehaviour
 {
-    public static event Action OnLoadScene;
+    //public static event Action OnLoadScene;
 
-    [Header("Loading Screen")]
+    /*[Header("Loading Screen")]
     [SerializeField] private GameObject _menuObject;
-    [SerializeField] private GameObject _loadingScreenObject;
+    [SerializeField] private GameObject _loadingScreenObject;*/
     [SerializeField] private Slider _loadingSlider;
     [SerializeField] private string _loadSceneName;
 
-    [Header("Load Scene Buttons")]
-    [SerializeField] private List<Button> _loadButtons;
+    /*[Header("Load Scene Buttons")]
+    [SerializeField] private List<Button> _loadButtons;*/
 
     //private GameScoreController _gameScoreController;
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
         foreach (Button button in _loadButtons)
         {
@@ -34,26 +34,31 @@ public class ASyncLoader : MonoBehaviour
         {
             button.onClick.RemoveListener(LoadLevel);
         }
-    }
+    }*/
 
     /*private void Start()
     {
         _gameScoreController = FindObjectOfType<GameScoreController>();
     }*/
 
+    private void Start()
+    {
+        LoadLevel();
+    }
+
     private void LoadLevel()
     {
-        AudioManager.Instance.PlayOneShot("Click");
+        //AudioManager.Instance.PlayOneShot("Click");
     
         /*if (_gameScoreController != null && _gameScoreController.Score > SaveLoadSystem.SaveLoadSystem.Instance.LoadGame())
         {
             _gameScoreController.SaveScore();
         }*/
     
-        OnLoadScene?.Invoke();
+        //OnLoadScene?.Invoke();
 
-        _menuObject.SetActive(false);
-        _loadingScreenObject.SetActive(true);
+        //_menuObject.SetActive(false);
+        //_loadingScreenObject.SetActive(true);
 
         StartCoroutine(LoadLevelASync());
         Time.timeScale = 1;

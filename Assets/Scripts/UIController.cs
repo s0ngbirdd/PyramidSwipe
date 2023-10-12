@@ -70,7 +70,7 @@ public class UIController : MonoBehaviour
         SwipeController.OnAddCurrency += UpdateCurrency;
         SwipeController.OnWrongSwipe += EnableGameOverPopup;
 
-        ASyncLoader.OnLoadScene += CheckScoreForSave;
+        SceneLoader.OnLoadScene += CheckScoreForSave;
     }
 
     private void OnDisable()
@@ -88,7 +88,7 @@ public class UIController : MonoBehaviour
         SwipeController.OnAddCurrency -= UpdateCurrency;
         SwipeController.OnWrongSwipe -= EnableGameOverPopup;
         
-        ASyncLoader.OnLoadScene -= CheckScoreForSave;
+        SceneLoader.OnLoadScene -= CheckScoreForSave;
 
         _tween.Kill();
     }
